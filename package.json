@@ -2,7 +2,7 @@
   "name": "tictactoe",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/Amym123/tictactoe.git",
+  "homepage": "https://amym123.github.io/tictactoe",
   "dependencies": {
     "gh-pages": "^2.0.1",
     "react": "^16.6.3",
