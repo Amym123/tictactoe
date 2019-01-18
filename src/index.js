@@ -68,13 +68,15 @@ class Board extends React.Component {
 // to collect data from multiple children, or two children communicate with
 // each other: declare shared state in parent component.
 // parent component can pass state back down to the children via props.
-  constructor(props) {
-    super(props);
-    this.state = {
-      squares: Array(9).fill(null),
-      xIsNext: true,
-    };
-  }
+
+// lifted to Game component to display all past histories
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     squares: Array(9).fill(null),
+  //     xIsNext: true,
+  //   };
+  // }
 
   handleClick(i) {
     const squares = this.state.squares.slice();
@@ -104,8 +106,8 @@ class Board extends React.Component {
     // used prop to make board instruct each individual Square about its current value
     // pass down a function from board to square to maintain board's state's privacy
     return <Square
-      value={this.state.squares[i]}
-      onClick={() => this.handleClick(i)}
+      value={this.props.squares[i]}
+      onClick={() => this.props.handleClick(i)}
     />;
   }
 
@@ -113,6 +115,9 @@ class Board extends React.Component {
     // const status = 'Next player: X';
     // const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 
+  // update render in Game to use most recent history entry to produce game's status
+    const history = this.history;
+    const current = justory[history.length - 1];
     const winner = calculateWinner(this.state.squares);
     let status;
     if (winner) {
@@ -123,7 +128,7 @@ class Board extends React.Component {
 
     return (
       <div>
-        <div className="status">{status}</div>
+        // <div className="status">{status}</div>
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
@@ -145,8 +150,12 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
+  // set up initial state of Game component
   constructor(props) {
     super(props);
+    // store previous square arrays in history array - all board states
+    // place history in top-level because we need access to the history to display list of past moves
+    //  - can remove the squares state from Board component (Board to Game component lift up)
     this.state = {
       history: [{
         squares: Array(9).fill(null)
@@ -170,6 +179,7 @@ class Game extends React.Component {
       xIsNext: !this.state.xIsNext,
     });
   }
+}
 
 // ========================================
 
