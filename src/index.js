@@ -171,7 +171,7 @@ class Game extends React.Component {
     // history in Game component -> remove squares state from its child Board.
 
   // update render in Game to use most recent history entry to produce game's status
-    const history = this.history;
+    const history = this.state.history;
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
@@ -191,9 +191,23 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     const winner = calculateWinner(current.squares);
 
+    // react elements are first-class JavaScript objects so they can be passed around in applications
+    // use array of react elements to render multiple items.
+      //map() is used for mapping data to other data, can be used to map history of moves
+    const moves = history.map((step, move) => {
+      const desc = move ?
+      'Go to move #' + move :
+      'Go to game start';
+      return (
+        <li>
+        <button onClick={() => this.jumpTo(move)}>{desc}</button>
+        </li>
+      );
+    });
+
     let status;
     if (winner) {
-      status = 'Winner: ' + winner;
+      status = 'Winner!: ' + winner;
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
@@ -208,7 +222,7 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{/* TODO */}</ol>
+          <ol>{moves}</ol>
         </div>
       </div>
     );
