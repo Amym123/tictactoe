@@ -199,7 +199,14 @@ class Game extends React.Component {
       'Go to move #' + move :
       'Go to game start';
       return (
-        <li>
+        // key: when element is created, React extracts key property and stores key directly on the returned element
+        //      cannot be referenced with this.props.key
+        //      React automatically decides which component to update using the key
+        //      component cannot inquire about its key
+        // assign proper keys when building dynamic lists!
+        // no key: warning from React, and use array index as key by default -> bad when re-ordering list's items/insert/delete
+        // only need to unique between components and siblings
+        <li key = {move}>
         <button onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
